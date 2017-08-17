@@ -17,7 +17,7 @@ namespace Trendyol.Excelsior.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
             //-----------------------------------------------------------------------------------------------------------
-            string uriPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase) + "\\spreadsheets\\GeneticTypeWorkbook.xlsx";
+            string uriPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase) + "\\spreadsheets\\NullablePropertyWorkbook.xlsx";
             string filePath = new Uri(uriPath).LocalPath;
 
             var excelsior = new Excelsior();
