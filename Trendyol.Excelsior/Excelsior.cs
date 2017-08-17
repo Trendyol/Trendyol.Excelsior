@@ -49,7 +49,7 @@ namespace Trendyol.Excelsior
 
         public IEnumerable<T> Listify<T>([NotNull] byte[] data, bool hasHeaderRow = false)
         {
-            if (data.Length <= 0)
+            if (data == null || data.Length <= 0)
             {
                 throw new ArgumentNullException(nameof(data));
             }
@@ -146,7 +146,7 @@ namespace Trendyol.Excelsior
 
         public IEnumerable<IValidatedRow<T>> Listify<T>([NotNull] byte[] data, IRowValidator<T> rowValidator, bool hasHeaderRow = false)
         {
-            if (data.Length <= 0)
+            if (data == null || data.Length <= 0)
             {
                 throw new ArgumentNullException(nameof(data));
             }
@@ -248,7 +248,7 @@ namespace Trendyol.Excelsior
 
         public IEnumerable<string[]> Arrayify([NotNull] byte[] data, bool hasHeaderRow = false)
         {
-            if (data.Length <= 0)
+            if (data == null || data.Length <= 0)
             {
                 throw new ArgumentNullException(nameof(data));
             }
@@ -300,9 +300,14 @@ namespace Trendyol.Excelsior
 
         public byte[] Excelify<T>([NotNull] IEnumerable<T> rows, bool printHeaderRow = false)
         {
+            if (rows == null)
+            {
+                throw new ArgumentNullException(nameof(rows));
+            }
+
             if (!printHeaderRow && !rows.Any())
             {
-                throw new ArgumentException("There must be at least one row to generate excel file.", "rows");
+                throw new ArgumentException("There must be at least one row to generate excel file.", nameof(rows));
             }
 
             IWorkbook workbook = new XSSFWorkbook();
