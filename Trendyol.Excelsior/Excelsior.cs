@@ -1,4 +1,4 @@
-﻿using NPOI.HSSF.UserModel;
+using NPOI.HSSF.UserModel;
 using NPOI.HSSF.Util;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
@@ -9,6 +9,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
+using JetBrains.Annotations;
+
 using Trendyol.Excelsior.Extensions;
 using Trendyol.Excelsior.Validation;
 
@@ -18,9 +20,9 @@ namespace Trendyol.Excelsior
     {
         public IEnumerable<T> Listify<T>(string filePath, bool hasHeaderRow = false)
         {
-            if (String.IsNullOrEmpty(filePath))
+            if (string.IsNullOrEmpty(filePath))
             {
-                throw new ArgumentNullException("filePath");
+                throw new ArgumentNullException(nameof(filePath));
             }
 
             string fileExtension = Path.GetExtension(filePath);
@@ -45,11 +47,11 @@ namespace Trendyol.Excelsior
             }
         }
 
-        public IEnumerable<T> Listify<T>(byte[] data, bool hasHeaderRow = false)
+        public IEnumerable<T> Listify<T>([NotNull] byte[] data, bool hasHeaderRow = false)
         {
-            if (data == null || data.Length == 0)
+            if (data == null || data.Length <= 0)
             {
-                throw new ArgumentNullException("data");
+                throw new ArgumentNullException(nameof(data));
             }
 
             IWorkbook workbook = GetWorkbook(data);
@@ -60,7 +62,7 @@ namespace Trendyol.Excelsior
         {
             if (workbook == null)
             {
-                throw new ArgumentNullException("workbook");
+                throw new ArgumentNullException(nameof(workbook));
             }
 
             ISheet sheet = workbook.GetSheetAt(0);
@@ -79,7 +81,7 @@ namespace Trendyol.Excelsior
                 throw new ExcelsiorException("Column count in given file does not match columns identified in model T.");
             }
 
-            int firstDataRow = 0;
+            var firstDataRow = 0;
 
             if (hasHeaderRow)
             {
@@ -101,7 +103,7 @@ namespace Trendyol.Excelsior
 
                 if (!IsRowEmpty(row))
                 {
-                    T item = GetItemFromRow<T>(row, mappingTypeProperties);
+                    var item = GetItemFromRow<T>(row, mappingTypeProperties);
 
                     if (!item.Equals(default(T)))
                     {
@@ -115,9 +117,9 @@ namespace Trendyol.Excelsior
 
         public IEnumerable<IValidatedRow<T>> Listify<T>(string filePath, IRowValidator<T> rowValidator, bool hasHeaderRow = false)
         {
-            if (String.IsNullOrEmpty(filePath))
+            if (string.IsNullOrEmpty(filePath))
             {
-                throw new ArgumentNullException("filePath");
+                throw new ArgumentNullException(nameof(filePath));
             }
 
             string fileExtension = Path.GetExtension(filePath);
@@ -142,11 +144,11 @@ namespace Trendyol.Excelsior
             }
         }
 
-        public IEnumerable<IValidatedRow<T>> Listify<T>(byte[] data, IRowValidator<T> rowValidator, bool hasHeaderRow = false)
+        public IEnumerable<IValidatedRow<T>> Listify<T>([NotNull] byte[] data, IRowValidator<T> rowValidator, bool hasHeaderRow = false)
         {
-            if (data == null || data.Length == 0)
+            if (data == null || data.Length <= 0)
             {
-                throw new ArgumentNullException("data");
+                throw new ArgumentNullException(nameof(data));
             }
 
             IWorkbook workbook = GetWorkbook(data);
@@ -157,7 +159,7 @@ namespace Trendyol.Excelsior
         {
             if (workbook == null)
             {
-                throw new ArgumentNullException("workbook");
+                throw new ArgumentNullException(nameof(workbook));
             }
 
             ISheet sheet = workbook.GetSheetAt(0);
@@ -176,7 +178,7 @@ namespace Trendyol.Excelsior
                 throw new ExcelsiorException("Column count in given file does not match columns identified in model T.");
             }
 
-            int firstDataRow = 0;
+            var firstDataRow = 0;
 
             if (hasHeaderRow)
             {
@@ -198,7 +200,7 @@ namespace Trendyol.Excelsior
 
                 if (!IsRowEmpty(row))
                 {
-                    T item = GetItemFromRow<T>(row, mappingTypeProperties);
+                    var item = GetItemFromRow<T>(row, mappingTypeProperties);
 
                     IRowValidationResult validationResult = rowValidator.Validate(item);
 
@@ -217,9 +219,9 @@ namespace Trendyol.Excelsior
 
         public IEnumerable<string[]> Arrayify(string filePath, bool hasHeaderRow = false)
         {
-            if (String.IsNullOrEmpty(filePath))
+            if (string.IsNullOrEmpty(filePath))
             {
-                throw new ArgumentNullException("filePath");
+                throw new ArgumentNullException(nameof(filePath));
             }
 
             string fileExtension = Path.GetExtension(filePath);
@@ -244,11 +246,11 @@ namespace Trendyol.Excelsior
             }
         }
 
-        public IEnumerable<string[]> Arrayify(byte[] data, bool hasHeaderRow = false)
+        public IEnumerable<string[]> Arrayify([NotNull] byte[] data, bool hasHeaderRow = false)
         {
-            if (data == null || data.Length == 0)
+            if (data == null || data.Length <= 0)
             {
-                throw new ArgumentNullException("data");
+                throw new ArgumentNullException(nameof(data));
             }
 
             IWorkbook workbook = GetWorkbook(data);
@@ -259,7 +261,7 @@ namespace Trendyol.Excelsior
         {
             if (workbook == null)
             {
-                throw new ArgumentNullException("workbook");
+                throw new ArgumentNullException(nameof(workbook));
             }
 
             ISheet sheet = workbook.GetSheetAt(0);
@@ -269,7 +271,7 @@ namespace Trendyol.Excelsior
                 return Enumerable.Empty<string[]>();
             }
 
-            int firstDataRow = 0;
+            var firstDataRow = 0;
 
             if (hasHeaderRow)
             {
@@ -286,7 +288,7 @@ namespace Trendyol.Excelsior
                 {
                     string[] itemRow = GetItemFromRow(row);
 
-                    if (itemRow != null)
+                    if (itemRow.Length > 0)
                     {
                         itemList.Add(itemRow);
                     }
@@ -296,16 +298,21 @@ namespace Trendyol.Excelsior
             return itemList;
         }
 
-        public byte[] Excelify<T>(IEnumerable<T> rows, bool printHeaderRow = false)
+        public byte[] Excelify<T>([NotNull] IEnumerable<T> rows, bool printHeaderRow = false)
         {
-            if (!printHeaderRow && (rows == null || !rows.Any()))
+            if (rows == null)
             {
-                throw new ArgumentException("There must be at least one row to generate excel file.", "rows");
+                throw new ArgumentNullException(nameof(rows));
+            }
+
+            if (!printHeaderRow && !rows.Any())
+            {
+                throw new ArgumentException("There must be at least one row to generate excel file.", nameof(rows));
             }
 
             IWorkbook workbook = new XSSFWorkbook();
             ISheet sheet = workbook.CreateSheet("Sheet1");
-            int rowIndex = 0;
+            var rowIndex = 0;
 
             List<PropertyInfo> mappingTypeProperties = GetMappingTypeProperties(typeof(T));
             mappingTypeProperties = mappingTypeProperties.OrderBy(p => p.GetCustomAttribute<ExcelColumnAttribute>().Order).ToList();
@@ -318,7 +325,7 @@ namespace Trendyol.Excelsior
                     .Select(p => p.GetCustomAttribute<ExcelColumnAttribute>().Name)
                     .ToList();
 
-                for (int i = 0; i < headerColumns.Count; i++)
+                for (var i = 0; i < headerColumns.Count; i++)
                 {
                     headerRow.CreateCell(i).SetCellValue(headerColumns[i]);
                 }
@@ -330,7 +337,7 @@ namespace Trendyol.Excelsior
 
             int? cellCount = null;
 
-            for (int i = 0; i < items.Count; i++)
+            for (var i = 0; i < items.Count; i++)
             {
                 IRow dataRow = sheet.CreateRow(rowIndex++);
 
@@ -341,7 +348,7 @@ namespace Trendyol.Excelsior
                     cellCount = rowCells.Count;
                 }
 
-                for (int j = 0; j < rowCells.Count; j++)
+                for (var j = 0; j < rowCells.Count; j++)
                 {
                     ICell cell = dataRow.CreateCell(j, rowCells[j].Type);
 
@@ -350,7 +357,7 @@ namespace Trendyol.Excelsior
                         case CellType.Numeric:
                             cell.SetCellValue(Convert.ToDouble(rowCells[j].Value));
 
-                            if (!String.IsNullOrEmpty(rowCells[j].Format))
+                            if (!string.IsNullOrEmpty(rowCells[j].Format))
                             {
                                 ICellStyle style = workbook.CreateCellStyle();
                                 style.DataFormat = HSSFDataFormat.GetBuiltinFormat(rowCells[j].Format);
@@ -358,7 +365,7 @@ namespace Trendyol.Excelsior
                             }
                             break;
                         case CellType.String:
-                            cell.SetCellValue(rowCells[j].Value == null ? String.Empty : $"{rowCells[j].Value}");
+                            cell.SetCellValue(rowCells[j].Value == null ? string.Empty : $"{rowCells[j].Value}");
                             break;
                         default:
                             throw new ArgumentOutOfRangeException("CellType", $"Unsupported cell type: {rowCells[j].Type}.");
@@ -368,13 +375,13 @@ namespace Trendyol.Excelsior
 
             if (cellCount.HasValue)
             {
-                for (int i = 0; i < cellCount.Value; i++)
+                for (var i = 0; i < cellCount.Value; i++)
                 {
                     sheet.AutoSizeColumn(i);
                 }
             }
 
-            using (MemoryStream stream = new MemoryStream())
+            using (var stream = new MemoryStream())
             {
                 workbook.Write(stream);
 
@@ -408,24 +415,19 @@ namespace Trendyol.Excelsior
             return type.GetProperties().Where(p => p.GetCustomAttribute<ExcelColumnAttribute>() != null).ToList();
         }
 
-        private bool CheckExcelColumnOrder<T>(IRow headerRow)
+        private bool CheckExcelColumnOrder<T>(IRow headerRow = null)
         {
             List<PropertyInfo> properties = GetMappingTypeProperties(typeof(T));
 
             if (headerRow != null)
             {
-                for (int i = 0; i < headerRow.Cells.Count; i++)
+                for (var i = 0; i < headerRow.Cells.Count; i++)
                 {
                     string cellValue = headerRow.Cells[i].StringCellValue;
 
                     PropertyInfo pi = properties.FirstOrDefault(p => p.GetCustomAttribute<ExcelColumnAttribute>().Name == cellValue);
 
-                    if (pi == null)
-                    {
-                        return false;
-                    }
-
-                    if (pi.GetCustomAttribute<ExcelColumnAttribute>().Order != i + 1)
+                    if (pi == null || pi.GetCustomAttribute<ExcelColumnAttribute>().Order != i + 1)
                     {
                         return false;
                     }
@@ -435,20 +437,21 @@ namespace Trendyol.Excelsior
             return true;
         }
 
-        private bool IsRowEmpty(IRow row)
+        private bool IsRowEmpty(IRow row = null)
         {
-            if (row == null)
+            if (row != null)
             {
-                return true;
-            }
-
-            for (int i = 0; i <= row.PhysicalNumberOfCells; i++)
-            {
-                ICell cell = row.GetCell(i);
-
-                if (cell != null && cell.CellType != CellType.Blank)
+                for (var i = 0; i <= row.PhysicalNumberOfCells; i++)
                 {
-                    return false;
+                    ICell cell = row.GetCell(i);
+
+                    if (cell != null)
+                    {
+                        if (cell.CellType != CellType.Blank)
+                        {
+                            return false;
+                        }
+                    }
                 }
             }
 
@@ -513,7 +516,7 @@ namespace Trendyol.Excelsior
                         {
                             DateTime val;
 
-                            if (String.IsNullOrEmpty(attr.Format))
+                            if (string.IsNullOrEmpty(attr.Format))
                             {
                                 if (DateTime.TryParse(columnValue, out val))
                                 {
@@ -549,7 +552,7 @@ namespace Trendyol.Excelsior
 
             if (isRowEmpty)
             {
-                return null;
+                return new string[0];
             }
 
             row.Cells.ForEach(c => c.SetCellType(CellType.String));
@@ -561,13 +564,13 @@ namespace Trendyol.Excelsior
 
         private List<ExcelCell> GetCellArrayForItem<T>(T item, List<PropertyInfo> mappingTypeProperties)
         {
-            List<ExcelCell> cells = new List<ExcelCell>();
+            var cells = new List<ExcelCell>();
 
             foreach (PropertyInfo pi in mappingTypeProperties)
             {
-                ExcelCell cell = new ExcelCell();
+                var cell = new ExcelCell();
 
-                ExcelColumnAttribute attr = pi.GetCustomAttribute<ExcelColumnAttribute>();
+                var attr = pi.GetCustomAttribute<ExcelColumnAttribute>();
 
                 if (attr.CellType == CellType.Unknown)
                 {
@@ -581,16 +584,9 @@ namespace Trendyol.Excelsior
 
                 if (itemValue != null)
                 {
-                    if (pi.PropertyType == typeof(DateTime))
+                    if (pi.PropertyType.GetUnderlyingTypeIfPossible() == typeof(DateTime))
                     {
-                        if (String.IsNullOrEmpty(attr.Format))
-                        {
-                            cell.Value = ((DateTime)itemValue).ToString(CultureInfo.InvariantCulture);
-                        }
-                        else
-                        {
-                            cell.Value = ((DateTime)itemValue).ToString(attr.Format, CultureInfo.InvariantCulture);
-                        }
+                        cell.Value = string.IsNullOrEmpty(attr.Format) ? ((DateTime)itemValue).ToString(CultureInfo.InvariantCulture) : ((DateTime)itemValue).ToString(attr.Format, CultureInfo.InvariantCulture);
                     }
                     else
                     {
@@ -618,7 +614,7 @@ namespace Trendyol.Excelsior
 
         private bool TryCreateHSSFWorkbook(byte[] data, out IWorkbook workbook)
         {
-            MemoryStream stream = new MemoryStream(data);
+            var stream = new MemoryStream(data);
 
             try
             {
@@ -640,7 +636,7 @@ namespace Trendyol.Excelsior
 
         private bool TryCreateXSSFWorkbook(byte[] data, out IWorkbook workbook)
         {
-            MemoryStream stream = new MemoryStream(data);
+            var stream = new MemoryStream(data);
 
             try
             {

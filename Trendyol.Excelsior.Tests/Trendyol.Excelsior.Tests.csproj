@@ -82,7 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <Content Include="spreadsheets\GeneticTypeWorkbook.xlsx">
+    <Content Include="spreadsheets\NullablePropertyWorkbook.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
