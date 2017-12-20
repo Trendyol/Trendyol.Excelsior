@@ -203,7 +203,7 @@ namespace Trendyol.Excelsior
                     IRowValidationResult validationResult = rowValidator.Validate(item);
 
                     IValidatedRow<T> validatedRow = new ValidatedRow<T>();
-                    validatedRow.RowNumber = firstDataRow;
+                    validatedRow.RowNumber = i;
                     validatedRow.Item = item;
                     validatedRow.IsValid = validationResult.IsValid;
                     validatedRow.Errors = validationResult.Errors;
