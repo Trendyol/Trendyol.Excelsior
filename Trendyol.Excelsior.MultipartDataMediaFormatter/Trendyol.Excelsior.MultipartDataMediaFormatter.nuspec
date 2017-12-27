@@ -13,7 +13,7 @@
     <copyright>Copyright 2016</copyright>
     <tags>tredyol excel npoi</tags>
     <dependencies>
-      <dependency id="Trendyol.Excelsior" version="2.0.0" />
+      <dependency id="Trendyol.Excelsior" version="2.0.1" />
       <dependency id="MultipartDataMediaFormatter" version="1.1.0" />
     </dependencies>
   </metadata>
