@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
+using Trendyol.Excelsior.Exceptions;
 using Trendyol.Excelsior.Extensions;
 using Trendyol.Excelsior.Validation;
 
@@ -76,7 +77,7 @@ namespace Trendyol.Excelsior
 
             if (mappingTypeProperties.Count != excelColumnCount)
             {
-                throw new ExcelsiorException("Column count in given file does not match columns identified in model T.");
+                throw new ColumnCountException("Column count in given file does not match columns identified in model T.");
             }
 
             int firstDataRow = 0;
@@ -87,7 +88,7 @@ namespace Trendyol.Excelsior
 
                 if (!isRightColumnOrder)
                 {
-                    throw new ExcelsiorException("Columns order identified in model T does not match the order in file.");
+                    throw new ColumnOrderException("Columns order identified in model T does not match the order in file.");
                 }
 
                 firstDataRow = 1;
@@ -173,7 +174,7 @@ namespace Trendyol.Excelsior
 
             if (mappingTypeProperties.Count != excelColumnCount)
             {
-                throw new ExcelsiorException("Column count in given file does not match columns identified in model T.");
+                throw new ColumnCountException("Column count in given file does not match columns identified in model T.");
             }
 
             int firstDataRow = 0;
@@ -184,7 +185,7 @@ namespace Trendyol.Excelsior
 
                 if (!isRightColumnOrder)
                 {
-                    throw new ExcelsiorException("Columns order identified in model T does not match the order in file.");
+                    throw new ColumnOrderException("Columns order identified in model T does not match the order in file.");
                 }
 
                 firstDataRow = 1;

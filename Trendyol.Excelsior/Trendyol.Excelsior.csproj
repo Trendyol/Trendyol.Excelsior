@@ -63,10 +63,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\ColumnCountException.cs" />
+    <Compile Include="Exceptions\ColumnOrderException.cs" />
     <Compile Include="ExcelCell.cs" />
     <Compile Include="ExcelColumnAttribute.cs" />
     <Compile Include="Excelsior.cs" />
-    <Compile Include="ExcelsiorException.cs" />
+    <Compile Include="Exceptions\ExcelsiorException.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="IExcelRow.cs" />
     <Compile Include="IExcelsior.cs" />

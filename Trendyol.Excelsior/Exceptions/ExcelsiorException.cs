@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections;
 
-namespace Trendyol.Excelsior
+namespace Trendyol.Excelsior.Exceptions
 {
     public class ExcelsiorException : Exception
     {
